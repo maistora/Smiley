@@ -10,6 +10,7 @@
 
 	
 	<target name="init-ivy" depends="download-ivy" description="Retrieves the dependencies.">
+		<echo level="info">Retrieving dependencies...</echo>
 		<ivy:settings file="${basedir}/ivy/ivysettings.xml" />
 		<ivy:retrieve conf="war" pattern="${lib.dir}/[conf]/[artifact](-[classifier]).[ext]"/>
 		<ivy:retrieve conf="compile" pattern="${lib.dir}/[conf]/[artifact](-[classifier]).[ext]"/>
@@ -18,12 +19,14 @@
 
 	
 	<target name="download-ivy" description="Download the Ivy library. Because of the ivysettings.xml it first check the cache.">
+		<echo level="info">Downloading Ivy from repository...</echo>
 		<mkdir dir="${ivy.jar.dir}" />
 		<get src="http://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.install.version}/ivy-${ivy.install.version}.jar" dest="${ivy.jar.file}" usetimestamp="true" />
 	</target>
 	
 	
 	<target name="clean" description="Cleans the project. Deletes the 'target' directory and the libraries.">
+		<echo level="info">Cleaning libraries...</echo>
 		<delete dir="${lib.compile.dir}" 	failonerror="false"/>
 		<delete dir="${lib.test.dir}" 		failonerror="false"/>
 		<delete dir="${lib.war.dir}" 		failonerror="false"/>
@@ -32,11 +35,13 @@
 
 	
 	<target name="full-clean" depends="clean" description="Cleans the project and the cache.">
+		<echo level="info">Cleaning cache...</echo>
 	    <ivy:cleancache/>
 	</target>
 
 	
 	<target name="compile" depends="clean, init-ivy" description="Compile the project and put the compiled files in the 'target' directory (a.k.a bin).">
+		<echo level="info">Compiling project...</echo>
 		<mkdir dir="${target.dir}" />
 		<copy todir="${target.dir}" includeEmptyDirs="no" failonerror="false">
 			<fileset dir="${src.dir}">
@@ -58,15 +63,18 @@
 	<condition property="_generatesWar"><equals arg1="war" arg2="${type}" /></condition>
 	
 	<target name="war" if="_generatesWar">
+		<echo level="info">Generating WAR...</echo>
 		<mkdir dir="${deploy.dir}" />
 		<!-- To at least have on directory there, or else it just fails. -->
 		<mkdir dir="${lib.war.dir}" />
-		<war destfile="${bps.deploy.dir}/${module}.${type}" webxml="${web.dir}/WEB-INF/web.xml" update="true">
+		<war destfile="${deploy.dir}/${module}.${type}" webxml="${web.dir}/WEB-INF/web.xml" update="true">
 			<lib dir="${lib.war.dir}">
 				<include name="*.jar" />
 			</lib>
 			<zipfileset dir="${web.dir}" />
 			<classes dir="${target.dir}" />
 		</war>
+		<echo level="info">WAR generated successfully!</echo>
+		<echo level="info">Deployed in ${deploy.dir} folder.</echo>
 	</target>
 </project>

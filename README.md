@@ -4,7 +4,7 @@ This is a sample project to show HOW TO:
 * Use Hibernate JPA's implementation - this includes some relations between the tables in the DB.
 * Implement simple logic to display the data from the database.
 
-Here are some steps you must go through when starting with this:
+Here are the begining steps I went through:
 1. In Eclipse create "Java Project". (I will not use the Eclipse's facets because I want everithing to be build from scratch)
 2. Create 2 source folders: "src" and "test".
 3. Make your packages (ex. com.simple.example). 
@@ -13,6 +13,7 @@ Here are some steps you must go through when starting with this:
 6. Create folder /ivy. Add the ivy.xml and ivysettings.xml files to it.
 7. Add the WebContent folder - in it wI will put the web pages and resources.
 8. Add WEB-INF and META-INF directories to WebContent. WEB-INF and META-INF are special directories that are not reachable from outside the Web server if they are in the root of the application. This is because of Web servers follow the Web Container's specification (and in it WEB-INF and META-INF are unreachable from outside). Now as you see my WEB-INF and META-INF are not in the root but are under the WebContent folder. Don't worry. Later on we will use the Ant script to build the application and we will copy these folders to the root of the WAR. WAR is the archived web application that is deployed on the server.
+9. Add plain web.xml (*1) deployment descriptor in the WEB-INF folder.
 
 This is how the structure should look like in the end:
     /src
@@ -37,10 +38,30 @@ This is how the structure should look like in the end:
     |
     /WebContent # contains the web pages for the project
     | `-WEB-INF
-    | `-META-INF
     |   `-unreachable.jsp
+    |   `-web.xml # See https://en.wikipedia.org/wiki/Deployment_descriptor for more information.
+    | `-META-INF
     | `-index.jsp
     |
     /build.xml # Ant script
     /build.properties # Ant script properties. Here the default ivy settings can be overriden.
     /local.build.properties # Ant local script properties (ex. contains things like local path to server).
+
+
+(*1) - plain web.xml 
+-----------------------------------------------------------
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	id="WebApp_ID" version="3.0">
+	
+	<display-name>Smiley</display-name>
+	
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+
+</web-app>
+-----------------------------------------------------------
+
