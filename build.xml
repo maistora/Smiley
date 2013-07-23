@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Build Smily" default="compile" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant" xmlns="antlib:org.apache.tools.ant">
+<project name="Build Smily" default="package" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant" xmlns="antlib:org.apache.tools.ant">
 	
 	<property file="${user.home}/.ant/local.build.properties" />
 	<property file="local.build.properties" />
@@ -62,7 +62,7 @@
 	
 	<condition property="_generatesWar"><equals arg1="war" arg2="${type}" /></condition>
 	
-	<target name="war" if="_generatesWar">
+	<target name="_war" if="_generatesWar">
 		<echo level="info">Generating WAR...</echo>
 		<mkdir dir="${deploy.dir}" />
 		<!-- To at least have on directory there, or else it just fails. -->
@@ -77,4 +77,6 @@
 		<echo level="info">WAR generated successfully!</echo>
 		<echo level="info">Deployed in ${deploy.dir} folder.</echo>
 	</target>
+	
+	<target name="package" depends="compile, _war"></target>
 </project>
