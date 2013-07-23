@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="./config/ivy/ivy-doc.xsl"?>
+
+<ivy-module version="2.0">
+	<info organisation="maistora" module="smily" />
+	
+	<configurations defaultconfmapping="war->default;compile->default;test->default">
+		<conf name="module" description="Modules for deployed ear" />
+		<conf name="war" description="Libraries for deployed war" />
+		<conf name="compile" extends="war" description="Compiling java classes" />
+		<conf name="test" extends="compile" description="To compile and run java tests" />
+	</configurations>
+	
+	<dependencies>
+		<dependency org="junit" name="junit" rev="4.11" conf="test"/>
+	</dependencies>
+
+</ivy-module>
