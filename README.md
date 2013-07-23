@@ -12,6 +12,7 @@ Here are some steps you must go through when starting with this:
 5. Create your Ant related files: build.xml, build.properties and the local.build.properties.
 6. Create folder /ivy. Add the ivy.xml and ivysettings.xml files to it.
 7. Add the WebContent folder - in it wI will put the web pages and resources.
+8. Add WEB-INF and META-INF directories to WebContent. WEB-INF and META-INF are special directories that are not reachable from outside the Web server if they are in the root of the application. This is because of Web servers follow the Web Container's specification (and in it WEB-INF and META-INF are unreachable from outside). Now as you see my WEB-INF and META-INF are not in the root but are under the WebContent folder. Don't worry. Later on we will use the Ant script to build the application and we will copy these folders to the root of the WAR. WAR is the archived web application that is deployed on the server.
 
 This is how the structure should look like in the end:
     /src
@@ -35,8 +36,11 @@ This is how the structure should look like in the end:
     | `-ivysettings.xml # describe the resolvers - which repositories to look in to and in what order.
     |
     /WebContent # contains the web pages for the project
+    | `-WEB-INF
+    | `-META-INF
+    |   `-unreachable.jsp
+    | `-index.jsp
     |
     /build.xml # Ant script
     /build.properties # Ant script properties. Here the default ivy settings can be overriden.
     /local.build.properties # Ant local script properties (ex. contains things like local path to server).
-

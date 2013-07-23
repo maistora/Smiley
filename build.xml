@@ -1,21 +1,72 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<project name="Build Smily" default="init-ivy" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant" xmlns="antlib:org.apache.tools.ant">
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Build Smily" default="compile" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant" xmlns="antlib:org.apache.tools.ant">
 	
 	<property file="${user.home}/.ant/local.build.properties" />
 	<property file="local.build.properties" />
 	<property file="build.properties" />
 	
+	
 	<taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpath="${ivy.jar.dir}/ivy.jar" />
 
-	<target name="init-ivy" depends="download-ivy">
+	
+	<target name="init-ivy" depends="download-ivy" description="Retrieves the dependencies.">
 		<ivy:settings file="${basedir}/ivy/ivysettings.xml" />
-		<ivy:retrieve conf="compile" pattern="lib/[conf]/[artifact](-[classifier]).[ext]"/>
-		<ivy:retrieve conf="test" pattern="lib/[conf]/[artifact](-[classifier]).[ext]"/>
+		<ivy:retrieve conf="war" pattern="${lib.dir}/[conf]/[artifact](-[classifier]).[ext]"/>
+		<ivy:retrieve conf="compile" pattern="${lib.dir}/[conf]/[artifact](-[classifier]).[ext]"/>
+		<ivy:retrieve conf="test" pattern="${lib.dir}/[conf]/[artifact](-[classifier]).[ext]"/>
 	</target>
 
-	<target name="download-ivy">
+	
+	<target name="download-ivy" description="Download the Ivy library. Because of the ivysettings.xml it first check the cache.">
 		<mkdir dir="${ivy.jar.dir}" />
 		<get src="http://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.install.version}/ivy-${ivy.install.version}.jar" dest="${ivy.jar.file}" usetimestamp="true" />
 	</target>
+	
+	
+	<target name="clean" description="Cleans the project. Deletes the 'target' directory and the libraries.">
+		<delete dir="${lib.compile.dir}" 	failonerror="false"/>
+		<delete dir="${lib.test.dir}" 		failonerror="false"/>
+		<delete dir="${lib.war.dir}" 		failonerror="false"/>
+		<delete dir="${target.dir}" 		failonerror="false"/>
+	</target>
 
+	
+	<target name="full-clean" depends="clean" description="Cleans the project and the cache.">
+	    <ivy:cleancache/>
+	</target>
+
+	
+	<target name="compile" depends="clean, init-ivy" description="Compile the project and put the compiled files in the 'target' directory (a.k.a bin).">
+		<mkdir dir="${target.dir}" />
+		<copy todir="${target.dir}" includeEmptyDirs="no" failonerror="false">
+			<fileset dir="${src.dir}">
+				<patternset>
+					<exclude name="**/*.java" />
+					<exclude name="**/*bak" />
+					<exclude name="**/.*" />
+				</patternset>
+			</fileset>
+		</copy>
+		<javac srcdir="${src.dir}" destdir="${target.dir}" encoding="UTF-8" debug="true" debuglevel="lines,vars,source" source="${java.version.src}" target="${java.version.target}">
+			<classpath>
+				<fileset dir="${lib.compile.dir}" includes="*.jar" />
+			</classpath>
+		</javac>
+	</target>
+	
+	
+	<condition property="_generatesWar"><equals arg1="war" arg2="${type}" /></condition>
+	
+	<target name="war" if="_generatesWar">
+		<mkdir dir="${deploy.dir}" />
+		<!-- To at least have on directory there, or else it just fails. -->
+		<mkdir dir="${lib.war.dir}" />
+		<war destfile="${bps.deploy.dir}/${module}.${type}" webxml="${web.dir}/WEB-INF/web.xml" update="true">
+			<lib dir="${lib.war.dir}">
+				<include name="*.jar" />
+			</lib>
+			<zipfileset dir="${web.dir}" />
+			<classes dir="${target.dir}" />
+		</war>
+	</target>
 </project>
