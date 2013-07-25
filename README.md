@@ -121,5 +121,23 @@ There are other ways to deploy your application to the server:
 
 2. By adding your-app-name.war.deploy file in the JBoss_AS_7_HOME/standalone/deployments/. This task could be automated by Ant script. See this one http://stackoverflow.com/questions/7013783/how-to-deploy-a-war-file-in-jboss-as-7 .
   
-For more information on this read the JBoss_AS_7_HOME/standalone/deployments/README.txt
+For more information on this read the JBoss_AS_7_HOME/standalone/deployments/README.txt  
+  
+  
+Now its time to add the configuration files for Hibernate so we can use it.  
+There are 2 options for this:  
+  
+1. We can use the Hibernate's proprietary API and use the hibernate.cfg.xml.  
+2. We can use the JPA (i.e. Hibernate EnitityManager) and use the persistence.xml file.  
+Note: the names of the files are fixed.
+  
+Check this StackOverflow quiestion http://stackoverflow.com/questions/3807503/what-is-the-purpose-of-two-config-files-for-hibernate .
+I am fan of the second approach so I'll use the persistence.xml configuration file.    
+I add it in the classpath under META-INF folder. So now we add the source folder called "resources" and in it create folder "META-INF". There we put the persistence.xml.  
+META-INF/persistence.xml is the default path where the configuration file is searched by Hibernate.    
+  
+Now we configure the persistence.xml file with PERSISTENCE-UNIT-NAME, HOST-IP-ADDRESS/DATABASE-NAME, USERNAME and PASSWORD for the database.  
+You can check the template I added under /docs/sample-persistence.xml (I took it from the net).  
+You can also execute the /db_scripts/dummy.sql in your DB - it will be used for testing purpose.  
 
+In order to use Hibernate we need the Hibernate libraries and MySQL driver (another lib). See the /ivy/ivy.xml for this.   

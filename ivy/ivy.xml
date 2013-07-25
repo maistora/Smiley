@@ -3,7 +3,7 @@
 
 <ivy-module version="2.0">
 	<info organisation="maistora" module="smily" />
-	
+
 	<!-- Configurations -->
 	<!-- 	What we put in the "war" configuration will be also available in the "compile" and "test" configuration.
 			What we put in the "compile" configuration will be also available in the "test" configuration.
@@ -14,11 +14,15 @@
 		<conf name="compile" extends="war" description="Compiling java classes" />
 		<conf name="test" extends="compile" description="To compile and run java tests" />
 	</configurations>
-	
+
 	<dependencies>
 		<dependency org="junit" name="junit" rev="4.11" conf="test"/>
 
-		<dependency org="commons-io" name="commons-io" rev="2.4" conf="war"/>
+		<!-- MySQL connector driver -->
+		<dependency org="mysql" name="mysql-connector-java" rev="5.1.9" conf="war"/>
+
+		<!-- Hibernate -->
+		<dependency org="org.hibernate" name="hibernate-entitymanager" rev="4.2.3.Final"/>
 	</dependencies>
 
 </ivy-module>
