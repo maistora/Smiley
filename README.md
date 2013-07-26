@@ -92,25 +92,25 @@ After running the "package" task in the Ant script:
 
 Now when we have the war file we should deploy it. In my case I will use JBoss AS 7 as application server.
 I have added new user to JBoss AS 7 using the add-user.sh in the JBoss_AS_7_HOME/bin:
-
-> ~> ./add-user.sh  
   
->What type of user do you wish to add?   
-> a) Management User (mgmt-users.properties)  
-> b) Application User (application-users.properties)  
->(a): a  
-  
->Enter the details of the new user to add.  
->Realm (ManagementRealm) :   
->Username : root  
->Password :   
->Re-enter Password :   
->The username 'root' is easy to guess  
->Are you sure you want to add user 'root' yes/no? yes  
->About to add user 'root' for realm 'ManagementRealm'  
->Is this correct yes/no? yes  
->Added user 'root' to file '/home/maistora/programming/Servers/jboss-as-7.1.0.Final/standalone/configuration/mgmt-users.properties'  
->Added user 'root' to file '/home/maistora/programming/Servers/jboss-as-7.1.0.Final/domain/configuration/mgmt-users.properties'  
+    > ~> ./add-user.sh  
+      
+    >What type of user do you wish to add?   
+    > a) Management User (mgmt-users.properties)  
+    > b) Application User (application-users.properties)  
+    >(a): a  
+      
+    >Enter the details of the new user to add.  
+    >Realm (ManagementRealm) :   
+    >Username : root  
+    >Password :   
+    >Re-enter Password :   
+    >The username 'root' is easy to guess  
+    >Are you sure you want to add user 'root' yes/no? yes  
+    >About to add user 'root' for realm 'ManagementRealm'  
+    >Is this correct yes/no? yes  
+    >Added user 'root' to file '/home/maistora/programming/Servers/jboss-as-7.1.0.Final/standalone/configuration/mgmt-users.properties'  
+    >Added user 'root' to file '/home/maistora/programming/Servers/jboss-as-7.1.0.Final/domain/configuration/mgmt-users.properties'  
   
 So after this you can start the server and login to the Administration.  
 There in the "Runtime tab" -> "Deployments" -> "Manage Deployments" -> "Add Content" -> Select your WAR file and follow the steps. After that hit "Enable". Now you can reach your application (ex. http://localhost:8080/my-application).  
@@ -140,4 +140,7 @@ Now we configure the persistence.xml file with PERSISTENCE-UNIT-NAME, HOST-IP-AD
 You can check the template I added under /docs/sample-persistence.xml (I took it from the net).  
 You can also execute the /db_scripts/dummy.sql in your DB - it will be used for testing purpose.  
 
-In order to use Hibernate we need the Hibernate libraries and MySQL driver (another lib). See the /ivy/ivy.xml for this.   
+Also check this article for JPA in a nutshell http://tomee.apache.org/jpa-concepts.html.
+
+In order to use Hibernate we need the Hibernate libraries and MySQL driver (another lib). See the /ivy/ivy.xml for this.  
+Now we are ready to write and execute queries! \m/, See the com.smily.experiment.db.util.DBConnectionProvider and execute the main method to test the connection.     
