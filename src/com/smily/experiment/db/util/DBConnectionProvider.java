@@ -35,7 +35,9 @@ public class DBConnectionProvider {
 	 * After class in Unit tests.
 	 */
 	public static void close() {
-		entityManager.close();
+		if (entityManager != null && entityManager.isOpen()) {
+			entityManager.close();
+		}
 		if (entityManagerFactory.isOpen()) {
 			entityManagerFactory.close();
 		}
