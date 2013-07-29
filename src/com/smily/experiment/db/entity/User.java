@@ -1,5 +1,7 @@
 package com.smily.experiment.db.entity;
 
+import java.math.BigInteger;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,7 +22,7 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ID", unique = true, nullable = false)
-	private Long id;
+	private BigInteger id;
 	
 	@Column(name = "login", length = 40, nullable = false)
 	private String login;
@@ -36,11 +38,11 @@ public class User {
 	@JoinColumn(name = "fk_company", nullable = false)
 	private Company company;
 
-	public Long getId() {
+	public BigInteger getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(BigInteger id) {
 		this.id = id;
 	}
 
@@ -74,5 +76,16 @@ public class User {
 
 	public void setCompany(Company company) {
 		this.company = company;
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("=== User ===\n" +
+				"ID: %s\n" +
+				"Login: %s\n" +
+				"Password: %s\n" +
+				"Email: %s\n" +
+				"Company ID: %s\n",
+				getId(), getLogin(), getPassword(), getEmail(), getCompany().getId());
 	}
 }

@@ -1,20 +1,20 @@
 package com.smily.experiment.web.dto;
 
-import com.smily.experiment.db.entity.Company;
+import java.math.BigInteger;
 
 public class UserDTO {
 
-	private Long	id;
+	private BigInteger	id;
 	private String  login;
 	private String  password;
 	private String  email;
-	private Company company;
+	private BigInteger companyId;
 
-	public Long getId() {
+	public BigInteger getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(BigInteger id) {
 		this.id = id;
 	}
 
@@ -42,12 +42,21 @@ public class UserDTO {
 		this.email = email;
 	}
 
-	public Company getCompany() {
-		return company;
+	public BigInteger getCompanyId() {
+		return companyId;
 	}
 
-	public void setCompany(Company company) {
-		this.company = company;
+	public void setCompanyId(BigInteger companyId) {
+		this.companyId = companyId;
 	}
 
+	@Override
+	public String toString() {
+		return String.format("=== User DTO ===\n" +
+				"ID: %s\n" +
+				"Login: %s\n" +
+				"Password: %s\n" +
+				"Email: %s\n" +
+				"Company ID: %s\n", getId(), getLogin(), getPassword(), getEmail(), getCompanyId());
+	}
 }

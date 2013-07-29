@@ -1,6 +1,7 @@
 package com.smily.experiment.db.entity;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,7 +17,7 @@ public class Company {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ID", unique = true, nullable = false)
-	private Long id;
+	private BigInteger id;
 	
 	@Column(name = "name", length = 120)
 	private String name;
@@ -27,11 +28,11 @@ public class Company {
 	@Column(name = "capital")
 	private BigDecimal capital;
 
-	public Long getId() {
+	public BigInteger getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(BigInteger id) {
 		this.id = id;
 	}
 
@@ -57,5 +58,14 @@ public class Company {
 
 	public void setCapital(BigDecimal capital) {
 		this.capital = capital;
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("=== Company ===\n" +
+				"ID: %s\n" +
+				"Name: %s\n" +
+				"Address: %s\n" +
+				"Capital: %s\n", getId(), getName(), getAddress(), getCapital());
 	}
 }
